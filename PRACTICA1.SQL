@@ -1,0 +1,5 @@
+CREATE OR REPLACE TYPE Telefon_Type AS OBJECT (
+tipus VARCHAR2(20),
+numero VARCHAR2(15)
+);
+/
