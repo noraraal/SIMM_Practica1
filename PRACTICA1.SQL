@@ -69,3 +69,67 @@ CREATE OR REPLACE TYPE BODY Comanda_Type AS
     END;
 END;
 /
+
+--Ejercicio 2
+-- Jerarquía Persona
+CREATE OR REPLACE TYPE Persona_Type AS OBJECT (
+    codi NUMBER,
+    dni VARCHAR2(9),
+    nom VARCHAR2(50),
+    adreça VARCHAR2(100),
+    telefon VARCHAR2(15),
+    NOT FINAL
+) NOT FINAL;
+/
+
+-- Subtipos
+CREATE OR REPLACE TYPE Empleat_Type UNDER Persona_Type (
+    sou NUMBER,
+    data_contracte DATE,
+    telefon_feina VARCHAR2(15),
+    lloc_treball VARCHAR2(50),
+    MEMBER FUNCTION antiguitat RETURN NUMBER
+);
+/
+
+CREATE OR REPLACE TYPE Estudiant_Type UNDER Persona_Type (
+    num_est VARCHAR2(10),
+    correu VARCHAR2(100),
+    data_naixement DATE,
+    MEMBER FUNCTION edat RETURN NUMBER
+);
+/
+
+-- Subtipos de Empleat
+CREATE OR REPLACE TYPE Professor_Type UNDER Empleat_Type (
+    titulacions VARCHAR2(200),
+    docencia VARCHAR2(100),
+    MEMBER FUNCTION triennis RETURN NUMBER
+);
+/
+
+CREATE OR REPLACE TYPE PAS_Type UNDER Empleat_Type (
+    feina VARCHAR2(50),
+    tipus_contracte VARCHAR2(20),
+    MEMBER FUNCTION sou_anual RETURN NUMBER
+);
+/
+
+-- Subtipos de Estudiant
+CREATE OR REPLACE TYPE Est_grau_Type UNDER Estudiant_Type (
+    titulacio VARCHAR2(50),
+    durada NUMBER,
+    any_1a_matricula NUMBER,
+    CONSTRUCTOR FUNCTION Est_grau_Type RETURN SELF AS RESULT
+);
+/
+
+CREATE OR REPLACE TYPE Est_cicles_Type UNDER Estudiant_Type (
+    nivell VARCHAR2(20),
+    cicle VARCHAR2(50),
+    curs NUMBER,
+    MEMBER FUNCTION descripcio RETURN VARCHAR2,
+    CONSTRUCTOR FUNCTION Est_cicles_Type RETURN SELF AS RESULT
+);
+/
+
