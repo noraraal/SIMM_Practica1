@@ -1,3 +1,4 @@
+--Autores: Nora Raghay, Sergi Adrià y Arnau Oller
 --Repositorio github https://github.com/noraraal/SIMM_Practica1.git
 --Ejercicio 1
 -- 1. Tipos básicos
