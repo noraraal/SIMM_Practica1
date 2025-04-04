@@ -78,7 +78,9 @@ CREATE OR REPLACE TYPE BODY Linia_Type AS
     MEMBER FUNCTION import_linia RETURN NUMBER IS
         v_preu NUMBER;
     BEGIN
-        SELECT p.preu INTO v_preu FROM DUAL p WHERE 1 = 0; -- placeholder
+        -- Se supone que recupera el precio del producto referenciado
+        -- Error: PLS-00225 (alias 'p' fuera de ámbito), ORA-00904 (columna no válida)
+        SELECT p.preu INTO v_preu FROM DUAL p WHERE 1 = 0; -- placeholder incorrecto
         RETURN SELF.unitats * v_preu;
     END;
 END;
@@ -88,6 +90,7 @@ CREATE OR REPLACE TYPE BODY Comanda_Type AS
     MEMBER FUNCTION import_total RETURN NUMBER IS
         total NUMBER := 0;
     BEGIN
+        -- Suma el importe total de todas las líneas
         FOR i IN 1 .. SELF.taula_linies.COUNT LOOP
             total := total + SELF.taula_linies(i).import_linia();
         END LOOP;
@@ -134,6 +137,7 @@ CREATE OR REPLACE TYPE Professor_Type UNDER Empleat_Type (
     docencia VARCHAR2(100),
     MEMBER FUNCTION triennis RETURN NUMBER
 );
+-- Error: PLS-00590 - tipo padre marcado como FINAL (no permite herencia)
 /
 
 CREATE OR REPLACE TYPE PAS_Type UNDER Empleat_Type (
@@ -141,6 +145,7 @@ CREATE OR REPLACE TYPE PAS_Type UNDER Empleat_Type (
     tipus_contracte VARCHAR2(20),
     MEMBER FUNCTION sou_anual RETURN NUMBER
 );
+-- Error: PLS-00590 - tipo padre marcado como FINAL (no permite herencia)
 /
 
 -- 4. Subtipos de Estudiant
@@ -150,6 +155,7 @@ CREATE OR REPLACE TYPE Est_grau_Type UNDER Estudiant_Type (
     any_1a_matricula NUMBER,
     CONSTRUCTOR FUNCTION Est_grau_Type RETURN SELF AS RESULT
 );
+-- Error: PLS-00590 - tipo padre marcado como FINAL (no permite herencia)
 /
 
 CREATE OR REPLACE TYPE Est_cicles_Type UNDER Estudiant_Type (
@@ -159,6 +165,7 @@ CREATE OR REPLACE TYPE Est_cicles_Type UNDER Estudiant_Type (
     MEMBER FUNCTION descripcio RETURN VARCHAR2,
     CONSTRUCTOR FUNCTION Est_cicles_Type RETURN SELF AS RESULT
 );
+-- Error: PLS-00590 - tipo padre marcado como FINAL (no permite herencia)
 /
 
 ----------------------------------------------------
@@ -170,16 +177,19 @@ CREATE OR REPLACE TYPE Analista_Type UNDER Empleat_Type (
     dataInici DATE,
     despatx VARCHAR2(10)
 );
+-- Error: PLS-00590 - tipo padre marcado como FINAL (no permite herencia)
 /
 
 CREATE OR REPLACE TYPE Programador_Type UNDER Empleat_Type (
     llenguatge VARCHAR2(40)
 );
+-- Error: PLS-00590 - tipo padre marcado como FINAL (no permite herencia)
 /
 
 CREATE OR REPLACE TYPE Tecnic_Type UNDER Empleat_Type (
     titolAcad VARCHAR2(40)
 );
+-- Error: PLS-00590 - tipo padre marcado como FINAL (no permite herencia)
 /
 
 CREATE OR REPLACE TYPE Projecte_Type AS OBJECT (
@@ -256,7 +266,8 @@ CREATE OR REPLACE TYPE BODY Client_Type AS
     MEMBER FUNCTION contarProj RETURN NUMBER IS
         v_count NUMBER;
     BEGIN
-        v_count := 0; -- evitar error si no existe tabla aún
+        -- Cuenta cuántos proyectos tiene el cliente (placeholder)
+        v_count := 0;
         RETURN v_count;
     END;
 END;
@@ -266,14 +277,16 @@ CREATE OR REPLACE TYPE BODY Projecte_Type AS
     MEMBER FUNCTION obtenerDirector RETURN VARCHAR2 IS
         v_nom VARCHAR2(100);
     BEGIN
-        v_nom := 'Director Desconocido'; -- Placeholder
+        -- Devuelve el nombre del director (valor fijo de prueba)
+        v_nom := 'Director Desconocido';
         RETURN v_nom;
     END;
 
     MEMBER FUNCTION faseActual RETURN VARCHAR2 IS
         v_fase VARCHAR2(30);
     BEGIN
-        v_fase := 'Fase no disponible'; -- Placeholder
+        -- Devuelve nombre de fase actual (placeholder)
+        v_fase := 'Fase no disponible';
         RETURN v_fase;
     END;
 END;
