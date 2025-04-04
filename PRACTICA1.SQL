@@ -134,7 +134,7 @@ CREATE OR REPLACE TYPE Est_cicles_Type UNDER Estudiant_Type (
 /
 
 --Ejercicio 3
--- 1. Eliminación segura de todos los objetos en orden inverso
+-- 1. Eliminación segura de todos los objetos en orden inverso para evitar conflictos
 BEGIN
     FOR obj IN (SELECT object_name, object_type 
                 FROM user_objects 
@@ -154,7 +154,7 @@ BEGIN
 END;
 /
 
--- 2. Definición corregida de tipos
+-- 2. Definición de tipos
 CREATE OR REPLACE TYPE Client_Type AS OBJECT (
     nif VARCHAR2(9),
     nom VARCHAR2(25),
@@ -178,7 +178,7 @@ CREATE OR REPLACE TYPE Empleat_Type AS OBJECT (
 ) NOT FINAL;
 /
 
--- Subtipos con sintaxis corregida
+-- Subtipos con sintaxis
 CREATE OR REPLACE TYPE Analista_Type UNDER Empleat_Type (
     dataInici DATE,
     despatx VARCHAR2(10)
@@ -246,7 +246,7 @@ CREATE OR REPLACE TYPE FasesProj_Type AS OBJECT (
 );
 /
 
--- 3. Creación de tablas corregidas
+-- 3. Creación de tablas
 CREATE TABLE Clients OF Client_Type (
     nif PRIMARY KEY
 );
@@ -273,7 +273,7 @@ CREATE TABLE ProjDesenv OF ProjDesenv_Type;
 CREATE TABLE ProjEstudi OF ProjEstudi_Type;
 CREATE TABLE FasesProj OF FasesProj_Type;
 
--- 4. Implementación de cuerpos de tipo corregidos
+-- 4. Implementación de cuerpos de tipo
 CREATE OR REPLACE TYPE BODY Client_Type AS
     MEMBER FUNCTION contarProj RETURN NUMBER IS
         v_count NUMBER;
