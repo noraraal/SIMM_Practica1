@@ -1,3 +1,4 @@
+--Repositorio github https://github.com/noraraal/SIMM_Practica1.git
 --Ejercicio 1
 -- 1. Tipos básicos
 CREATE OR REPLACE TYPE Telefon_Type AS OBJECT (
